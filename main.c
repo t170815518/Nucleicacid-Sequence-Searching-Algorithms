@@ -7,10 +7,10 @@
 #define MAX_INPUT 100000
 #define BASE 10
 
-int getLength(const char *sequenceToFind);
+int getLength(const char *);
 unsigned int hash(char *stringSegment, int length);
 int bruteForceCompare(const char *sequenceToFind, int patternLength, const char *subString);
-int* RabinKarpAlgorithm(char *geneticSequence, char *sequenceToFind);
+int RabinKarpAlgorithm(char *geneticSequence, char *sequenceToFind, int *occurances);
 char *readFile();
 
 int main() {
@@ -18,15 +18,13 @@ int main() {
     char patternSequence[MAX_INPUT];
     scanf("%s", patternSequence);
 
-    int *occurances = RabinKarpAlgorithm(geneticSequence, patternSequence);
-    int i = 0;
-    int found = 0;
-    while (occurances[i] != NULL) {
-        printf("%d", occurances[i]);
-        i++;
-        found = 1;
-    }
-    if (found == 0) {
+    int occurances[MAX_OCCURANCE] = {};
+    int occurancesNum = RabinKarpAlgorithm(geneticSequence, patternSequence, occurances);
+    if (occurancesNum != 0) {
+        for (int i = 0; i < occurancesNum; i++) {
+            printf("%d ", occurances[i]);
+        }
+    } else {
         printf("Not Found.");
     }
 
@@ -63,10 +61,10 @@ unsigned int hash(char *stringSegment, int length) {
     return hash_value;
 }
 
-int* RabinKarpAlgorithm(char *geneticSequence, char *sequenceToFind) {
+int RabinKarpAlgorithm(char *geneticSequence, char *sequenceToFind, int *occurances) {
     /* Find matching patterns for string in Rabin-Karp Algorithm.
-     * Return: the int array for index*/
-    int occurances[MAX_OCCURANCE] = {};
+     * The index of occurrance will be kept into occurances array.
+     * return: number of occurances*/
     int occurance_id = 0;
     int patternLength = getLength(sequenceToFind);
     int geneticLength = getLength(geneticSequence);
@@ -81,11 +79,14 @@ int* RabinKarpAlgorithm(char *geneticSequence, char *sequenceToFind) {
             if (bruteForceCompare(sequenceToFind, patternLength, subString) == 1) {
                 occurances[occurance_id] = i;
                 occurance_id += 1;
+                if (occurance_id >= MAX_OCCURANCE) {
+                    printf("There are more than %d occurances. Only %d of them are displayed.\n", MAX_OCCURANCE, MAX_OCCURANCE);
+                    break;
+                }
             }
         }
     }
-
-    return occurances;
+    return occurance_id;
 }
 
 int bruteForceCompare(const char *sequenceToFind, int patternLength, const char *subString) {
