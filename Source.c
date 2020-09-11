@@ -3,7 +3,9 @@
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
+#include <time.h>
 
+#define MAX_INPUT 1024
 #define MAX_LENGTH 1000000
 
 void computeLPSArray(char *pat, int M, int *lps);
@@ -33,7 +35,7 @@ int* KMPSearch(char *pat, char *txt, int *noOfOccur)
 
 		if (j == M)
 		{
-			printf("Found pattern at index %d \n", i - j);
+			//printf("Found pattern at index %d \n", i - j);
 			++*noOfOccur;
 			occurance = (int*)realloc(occurance, *noOfOccur * sizeof(int));
 			occurance[*noOfOccur-1] = i - j;
@@ -94,7 +96,7 @@ void computeLPSArray(char *pat, int M, int *lps)
 char *readFile() {
     /* read from the specified file.
      * Return: char array, with non-DNA/RNA information deleted.*/
-    FILE * file = fopen("GCF_009858895.2_ASM985889v3_genomic - Copy.fna", "r");
+    FILE * file = fopen("GCF_009858895.2_ASM985889v3_genomic.fna", "r");
     char dummyInput[200];
     char inputSequence[MAX_LENGTH];
     char buffer;
@@ -117,13 +119,26 @@ char *readFile() {
 int main()
 {
 	char *txt = readFile();
-	char *pat = "TTTATACCTTCC";
+	char *pat[MAX_INPUT];
+	scanf("%s", &pat); // TTTATACCTTCC
 	int noOfOccur = 0;
+	clock_t startTime = clock();
 	int *occurance = KMPSearch(pat, txt, &noOfOccur);
-	printf("Number of occurances %i\n", noOfOccur);
-	for (int i = 0; i < noOfOccur; ++i)
+	clock_t endTime = clock();
+	double elapsed = (double)(endTime - startTime) * 1000.0 / CLOCKS_PER_SEC;
+	printf("Execution time = %f\n", elapsed);
+
+	if (occurance)
 	{
-		printf("Found match at element %i\n", occurance[i]);
+		printf("Number of occurances %i\n", noOfOccur);
+		for (int i = 0; i < noOfOccur; ++i)
+		{
+			printf("Found match at element %i\n", occurance[i]);
+		}
+	}
+	else
+	{
+		printf("Sequence not found");
 	}
 	return 0;
 }
