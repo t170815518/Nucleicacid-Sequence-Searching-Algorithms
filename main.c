@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <string.h>
+#include <time.h>
 
 #define MAX_OCCURANCE 100
 #define MAX_LENGTH 1000000
@@ -18,16 +19,21 @@ int main() {
     char patternSequence[MAX_INPUT];
     scanf("%s", patternSequence);
 
+    clock_t startTime = clock();
     int occurances[MAX_OCCURANCE] = {};
     int occurancesNum = RabinKarpAlgorithm(geneticSequence, patternSequence, occurances);
     if (occurancesNum != 0) {
         for (int i = 0; i < occurancesNum; i++) {
             printf("%d ", occurances[i]);
         }
+        printf("\n");
     } else {
         printf("Not Found.");
     }
 
+    clock_t endTime = clock();
+    double elapsed = (double)(endTime - startTime) * 1000.0 / CLOCKS_PER_SEC;
+    printf("Execution time = %f", elapsed);
     return 0;
 }
 
