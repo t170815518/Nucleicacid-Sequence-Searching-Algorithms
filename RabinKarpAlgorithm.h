@@ -7,6 +7,7 @@
 
 
 int RabinKarpAlgorithmNaive(char *geneticSequence, char *sequenceToFind, int *occurrence);
+int RabinKarpAlgorithm_ntHash(char *geneticSequence, char *sequenceToFind, int *occurrence);
 
 
 #endif //LAB_RABINKARPALGORITHM_H

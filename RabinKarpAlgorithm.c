@@ -3,18 +3,19 @@
 
 #include "RabinKarpAlgorithm.h"
 #include "FNAFilePreprocess.h"
-#include <stddef.h>
 #include <string.h>
 #include <math.h>
 #include <stdio.h>
+#include <limits.h>
+#include <stdint.h>
 
 
 #define BASE 3
 
 
 // function prototypes
-int RabinKarpAlgorithmNaive(char *geneticSequence, char *sequenceToFind, int *occurrence);
 int bruteForceCompare(const char *sequenceToFind, int patternLength, const char *subString);
+uint32_t rotl32 (uint32_t value, unsigned int count);
 
 
 int RabinKarpAlgorithmNaive(char *geneticSequence, char *sequenceToFind, int *occurrence) {
@@ -43,16 +44,18 @@ int RabinKarpAlgorithmNaive(char *geneticSequence, char *sequenceToFind, int *oc
         }
 
         if (subStringHash == patternHash) {
-            numOfCollisions += 1;
+
             if (bruteForceCompare(sequenceToFind, patternLength, subString) == 1) {
                 occurrence[occurrence_id] = i;
                 occurrence_id += 1;
 
                 if (occurrence_id >= MAX_OCCURRENCES) {
-                    printf("==========There are more than %d occurances. Only %d of them are displayed.==========\n",
+                    printf("==========There are more than %d occurrences. Only %d of them are displayed.==========\n",
                            MAX_OCCURRENCES, MAX_OCCURRENCES);
                     break;
                 }
+            } else {
+                numOfCollisions += 1;
             }
         }
         i += 1;
@@ -69,4 +72,63 @@ int bruteForceCompare(const char *sequenceToFind, int patternLength, const char 
         }
     }
     return 1;
+}
+
+
+int RabinKarpAlgorithm_ntHash(char *geneticSequence, char *sequenceToFind, int *occurrence) {
+    /* RabinKarp Algorithm using ntHash.
+    * The index of occurrence will be kept into int array, occurrence.
+    * return: number of occurrence*/
+    // preprocess pattern string
+    int patternLength = 0;
+    while (sequenceToFind[patternLength] != '\0') {
+        patternLength += 1;
+    }
+
+    unsigned int patternHash = 0;
+    for (int i = 0; i < patternLength; ++i) {
+        patternHash = patternHash ^ rotl32(valueMap[sequenceToFind[i]],patternLength-1-i);
+    }
+
+    int occurrence_id = 0;
+    char subString[patternLength];
+    unsigned int subStringHash = 0;
+
+    int numOfCollisions = 0;
+
+    for (int i = 0; i < patternLength; ++i) {  // Please ensure the gene sequence is larger than the searching pattern
+        subStringHash = subStringHash ^ rotl32(valueMap[geneticSequence[i]],patternLength-1-i);
+    }
+
+    unsigned long i = 1;
+    while (geneticSequence[i+patternLength-1] != '\0') {
+        // update substring's hash value
+        subStringHash = rotl32(subStringHash,1)^rotl32(valueMap[geneticSequence[i-1]],patternLength)
+                ^valueMap[geneticSequence[i+patternLength-1]];
+
+        if (subStringHash == patternHash) {
+            if (bruteForceCompare(sequenceToFind, patternLength, subString) == 1) {
+                occurrence[occurrence_id] = i;
+                occurrence_id += 1;
+
+                if (occurrence_id >= MAX_OCCURRENCES) {
+                    printf("==========There are more than %d occurrences. Only %d of them are displayed.==========\n",
+                           MAX_OCCURRENCES, MAX_OCCURRENCES);
+                    break;
+                }
+            } else {
+                numOfCollisions += 1;
+            }
+        }
+        i += 1;
+    }
+    printf("==========%d times of collisions==========\n", numOfCollisions);
+    return occurrence_id;
+}
+
+
+uint32_t rotl32 (uint32_t value, unsigned int count) {
+    const unsigned int mask = CHAR_BIT * sizeof(value) - 1;
+    count &= mask;
+    return (value << count) | (value >> (-count & mask));
 }
