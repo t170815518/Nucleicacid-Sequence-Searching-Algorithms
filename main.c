@@ -2,22 +2,29 @@
 #include <math.h>
 #include <string.h>
 #include <time.h>
+#include <stdlib.h>
+#include <limits.h>
 
 #define MAX_OCCURANCE 100
 #define MAX_LENGTH 1000000
 #define MAX_INPUT 100000
 #define BASE 10
 
+unsigned int valueMap[86];
+
 int getLength(const char *);
 unsigned int hash(char *stringSegment, int length);
 int bruteForceCompare(const char *sequenceToFind, int patternLength, const char *subString);
 int RabinKarpAlgorithm(char *geneticSequence, char *sequenceToFind, int *occurances);
 char *readFile();
+void initializeValueMap();
+uint32_t rotl32 (uint32_t value, unsigned int count);
 
 int main() {
     char * geneticSequence = readFile();
     char patternSequence[MAX_INPUT];
     scanf("%s", patternSequence);
+    initializeValueMap();
 
     clock_t startTime = clock();
     int occurances[MAX_OCCURANCE] = {};
@@ -62,7 +69,7 @@ char *readFile() {
 unsigned int hash(char *stringSegment, int length) {
     unsigned int hash_value = 0;
     for (int i = 0; i < length; i++) {
-        hash_value += pow(BASE, i) * stringSegment[i];
+        hash_value = hash_value ^ rotl32(valueMap[stringSegment[i]], length-1-i);
     }
     return hash_value;
 }
@@ -110,4 +117,34 @@ int getLength(const char *string) {
         patternLength += 1;
     }
     return patternLength;
+}
+
+void initializeValueMap() {
+    srand (time(NULL));
+
+    valueMap['G'] = 0;
+    valueMap['A'] = 0;
+    valueMap['C'] = 0;
+    valueMap['T'] = 0;
+    valueMap['U'] = 0;
+
+    for (int i = 0; i < sizeof(unsigned int) * 8; i++) {
+        valueMap['G'] = valueMap['G'] * 2 + rand() % 2;
+        valueMap['A'] = valueMap['A'] * 2 + rand() % 2;
+        valueMap['C'] = valueMap['C'] * 2 + rand() % 2;
+        valueMap['T'] = valueMap['T'] * 2 + rand() % 2;
+        valueMap['U'] = valueMap['U'] * 2 + rand() % 2;
+    }
+
+    printf("G = %u\n", valueMap['G']);
+    printf("A = %u\n", valueMap['A']);
+    printf("C = %u\n", valueMap['C']);
+    printf("T = %u\n", valueMap['T']);
+    printf("U = %u\n", valueMap['U']);
+}
+
+uint32_t rotl32 (uint32_t value, unsigned int count) {
+    const unsigned int mask = CHAR_BIT * sizeof(value) - 1;
+    count &= mask;
+    return (value << count) | (value >> (-count & mask));
 }
