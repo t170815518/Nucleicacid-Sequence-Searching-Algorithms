@@ -1,5 +1,6 @@
 #include "FNAFilePreprocess.h"
 #include "RabinKarpAlgorithm.h"
+#include "BruteForce.h"
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
@@ -21,12 +22,11 @@ int main(int argc, char *argv[]) {
             func_ptr = &RabinKarpAlgorithm_ntHash;
         } else if (strcmp(argv[1],RABINKARP_COMMAND) == 0) {
             func_ptr = &RabinKarpAlgorithmNaive;
+            initializeValueMap();
         }
     } else {
-        func_ptr = &RabinKarpAlgorithmNaive;  // default algorithm
+        func_ptr = &BruteForce;  // default algorithm
     }
-
-    initializeValueMap();
 
     printf("Type the target pattern to search (type -1 to exit the program): ");
     scanf("%s", patternSequence);  // '\0' is appended

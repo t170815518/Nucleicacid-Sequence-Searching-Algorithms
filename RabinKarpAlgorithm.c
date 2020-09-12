@@ -99,6 +99,15 @@ int RabinKarpAlgorithm_ntHash(char *geneticSequence, char *sequenceToFind, int *
     for (int i = 0; i < patternLength; ++i) {  // Please ensure the gene sequence is larger than the searching pattern
         subStringHash = subStringHash ^ rotl32(valueMap[geneticSequence[i]],patternLength-1-i);
     }
+    if (subStringHash == patternHash) {
+        strncpy(subString, &geneticSequence[0], patternLength);
+        if (bruteForceCompare(sequenceToFind, patternLength, subString) == 1) {
+            occurrence[occurrence_id] = 0;
+            occurrence_id += 1;
+        } else {
+            numOfCollisions += 1;
+        }
+    }
 
     unsigned long i = 1;
     while (geneticSequence[i+patternLength-1] != '\0') {
@@ -107,6 +116,7 @@ int RabinKarpAlgorithm_ntHash(char *geneticSequence, char *sequenceToFind, int *
                 ^valueMap[geneticSequence[i+patternLength-1]];
 
         if (subStringHash == patternHash) {
+            strncpy(subString, &geneticSequence[i], patternLength);
             if (bruteForceCompare(sequenceToFind, patternLength, subString) == 1) {
                 occurrence[occurrence_id] = i;
                 occurrence_id += 1;
@@ -128,6 +138,7 @@ int RabinKarpAlgorithm_ntHash(char *geneticSequence, char *sequenceToFind, int *
 
 
 uint32_t rotl32 (uint32_t value, unsigned int count) {
+    /* ref: wikipedia */
     const unsigned int mask = CHAR_BIT * sizeof(value) - 1;
     count &= mask;
     return (value << count) | (value >> (-count & mask));
