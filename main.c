@@ -8,7 +8,7 @@
 #define MAX_OCCURANCE 100
 #define MAX_LENGTH 1000000
 #define MAX_INPUT 100000
-#define BASE 10
+#define BASE 3
 
 unsigned int valueMap[86];
 
@@ -69,6 +69,7 @@ char *readFile() {
 unsigned int hash(char *stringSegment, int length) {
     unsigned int hash_value = 0;
     for (int i = 0; i < length; i++) {
+//        hash_value += pow(BASE, i) * stringSegment[i];
         hash_value = hash_value ^ rotl32(valueMap[stringSegment[i]], length-1-i);
     }
     return hash_value;
@@ -81,11 +82,21 @@ int RabinKarpAlgorithm(char *geneticSequence, char *sequenceToFind, int *occuran
     int occurance_id = 0;
     int patternLength = getLength(sequenceToFind);
     int geneticLength = getLength(geneticSequence);
-    unsigned int patternHash = hash(sequenceToFind, patternLength);
 
-    for (int i = 0; i < geneticLength - patternLength; i++) {
-        char subString[patternLength];
+    char subString[patternLength];
+    strncpy(subString, &geneticSequence[0], patternLength);
+    unsigned int patternHash = hash(sequenceToFind, patternLength);
+    unsigned int sequenceHash = hash(subString, patternLength);
+    if (sequenceHash == patternHash) {
+        if (bruteForceCompare(sequenceToFind, patternLength, subString) == 1) {
+            occurances[occurance_id] = 0;
+            occurance_id += 1;
+        }
+    }
+
+    for (int i = 1; i < geneticLength - patternLength; i++) {
         strncpy(subString, &geneticSequence[i], patternLength);
+        sequenceHash = rotl32(sequenceHash, 1) ^ rotl32(valueMap[geneticSequence[i-1]], patternLength) ^ valueMap[geneticSequence[i+patternLength-1]];
         if (hash(subString, patternLength) != patternHash) {
             continue;
         } else {
