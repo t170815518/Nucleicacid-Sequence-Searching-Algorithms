@@ -6,7 +6,7 @@
 #include <time.h>
 
 #define MAX_INPUT 1024
-#define MAX_LENGTH 1000000
+#define MAX_LENGTH 0x7fffffff
 
 void computeLPSArray(char *pat, int M, int *lps);
 
@@ -96,9 +96,11 @@ void computeLPSArray(char *pat, int M, int *lps)
 char *readFile() {
     /* read from the specified file.
      * Return: char array, with non-DNA/RNA information deleted.*/
-    FILE * file = fopen("GCF_009858895.2_ASM985889v3_genomic.fna", "r");
+    //FILE * file = fopen("GCF_009858895.2_ASM985889v3_genomic.fna", "r"); // covid
+	FILE * file = fopen("GCF_000002985.6_WBcel235_genomic.fna", "r"); // roundworm
+	
     char dummyInput[200];
-    char inputSequence[MAX_LENGTH];
+    char *inputSequence = (char *)malloc(MAX_LENGTH);
     char buffer;
     unsigned int id = 0;
 
@@ -107,20 +109,20 @@ char *readFile() {
         if (buffer == '\n') {
             continue;
         } else {
-            inputSequence[id] = buffer;
+            (&inputSequence)[id] = toupper(buffer);
             id += 1;
         }
     }
     fclose(file);
-    return inputSequence;
+    return *inputSequence;
 }
 
 // Driver program to test above function
 int main()
 {
 	char *txt = readFile();
-	char *pat[MAX_INPUT];
-	scanf("%s", &pat); // TTTATACCTTCC
+	char *pat = (char *)malloc(MAX_LENGTH);
+	scanf("%s", &pat); // TTTATACCTTCC = [0,1,2,0,1,0,0,0,1,2,0,0]  AAAGAGTTTTTCGCAATT
 	int noOfOccur = 0;
 	clock_t startTime = clock();
 	int *occurance = KMPSearch(pat, txt, &noOfOccur);
