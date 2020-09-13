@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 
+const int MAX_OCCURRENCES = 100;
 
 void computeLPSArray(char *pat, int M, int *lps);
 
@@ -30,10 +31,13 @@ int KMPSearch(char *pat, char *txt, int *occurrences) {
 
         if (j == M)
         {
-            //printf("Found pattern at index %d \n", i - j);
             ++noOfOccur;
-            occurrences = (int*)realloc(occurrences, noOfOccur * sizeof(int));
             occurrences[noOfOccur-1] = i - j;
+			if (noOfOccur >= MAX_OCCURRENCES)
+			{
+				printf("==========There are more than %d occurrences. Only %d of them are displayed.==========\n", MAX_OCCURRENCES, MAX_OCCURRENCES);
+				break;
+			}
             j = lps[j - 1];
         }
 
