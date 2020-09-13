@@ -1,0 +1,32 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/tangyuting/Study/CZ2001/lab/BruteForce.h
+
+/Users/tangyuting/Study/CZ2001/lab/FNAFilePreprocess.h
+
+/Users/tangyuting/Study/CZ2001/lab/KMPAlgorithm.h
+
+/Users/tangyuting/Study/CZ2001/lab/RabinKarpAlgorithm.h
+
+/Users/tangyuting/Study/CZ2001/lab/main.c
+FNAFilePreprocess.h
+/Users/tangyuting/Study/CZ2001/lab/FNAFilePreprocess.h
+RabinKarpAlgorithm.h
+/Users/tangyuting/Study/CZ2001/lab/RabinKarpAlgorithm.h
+BruteForce.h
+/Users/tangyuting/Study/CZ2001/lab/BruteForce.h
+KMPAlgorithm.h
+/Users/tangyuting/Study/CZ2001/lab/KMPAlgorithm.h
+stdio.h
+-
+time.h
+-
+string.h
+-
+
