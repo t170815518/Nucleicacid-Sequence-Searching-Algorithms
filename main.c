@@ -14,13 +14,13 @@
 
 
 int main(int argc, char *argv[]) {
-    char * geneticSequence = readFile();
+    char *geneticSequence;
     int occurrences[MAX_OCCURRENCES];
     char patternSequence[MAX_INPUT];
     int (*func_ptr)(char*, char*, int*);
 
     // parse the command line arguments
-    if (argc == 2) {
+    if (argc >= 2) {
         if (strcmp(argv[1],NTHASH_COMMAND) == 0) {
             func_ptr = &RabinKarpAlgorithm_ntHash;
             initializeValueMap();
@@ -31,8 +31,15 @@ int main(int argc, char *argv[]) {
         } else if (strcmp(argv[1],KMP_COMMAND) == 0) {
             func_ptr = &KMPSearch;
         }
+
+        if (argc == 3) {
+            geneticSequence = readFile(argv[2]);
+        } else {
+            geneticSequence = readFile("example.fna");
+        }
     } else {
         func_ptr = &BruteForce;  // default algorithm
+        geneticSequence = readFile("example.fna");
     }
 
     printf("Type the target pattern to search (type -1 to exit the program): ");

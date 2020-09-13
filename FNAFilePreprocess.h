@@ -12,7 +12,7 @@ extern const unsigned long MAX_LENGTH;
 extern const unsigned long MAX_INPUT;
 
 
-char *readFile();
+char *readFile(char *datasetName);
 void initializeValueMap();
 
 #endif //LAB_FNAFILEPREPROCESS_H

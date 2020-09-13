@@ -9,14 +9,14 @@ const unsigned long MAX_OCCURRENCES = 100;
 const unsigned long MAX_LENGTH = 10000000000;
 const unsigned long MAX_INPUT = 100000;
 
-char *readFile();
 
-
-char *readFile() {
+char *readFile(char *datasetName) {
     /* read from the specified file.
      * Return: char array, with non-DNA/RNA information deleted.*/
     // change the path here:
-    FILE * file = fopen("/Users/tangyuting/Study/CZ2001/lab/dna.200MB", "r");
+    char path[1000];
+    sprintf(path, "../dataset/%s",datasetName);
+    FILE * file = fopen(path, "r");
 
     char dummyInput[200];
     char *inputSequence = (char*)malloc(MAX_LENGTH * sizeof(char));
