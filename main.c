@@ -1,15 +1,16 @@
 #include "FNAFilePreprocess.h"
 #include "RabinKarpAlgorithm.h"
 #include "BruteForce.h"
+#include "KMPAlgorithm.h"
 #include <stdio.h>
 #include <time.h>
-#include <stdlib.h>
 #include <string.h>
 
 
-#define NTHASH_COMMAND "rk-nthash"
+#define NTHASH_COMMAND "rk-nt"
 #define RABINKARP_COMMAND "rk"
 #define BRUTEFROCE_COMMAND "b"
+#define KMP_COMMAND "kmp"
 
 
 int main(int argc, char *argv[]) {
@@ -27,6 +28,8 @@ int main(int argc, char *argv[]) {
             func_ptr = &RabinKarpAlgorithmNaive;
         } else if (strcmp(argv[1],BRUTEFROCE_COMMAND) == 0) {
             func_ptr = &BruteForce;
+        } else if (strcmp(argv[1],KMP_COMMAND) == 0) {
+            func_ptr = &KMPSearch;
         }
     } else {
         func_ptr = &BruteForce;  // default algorithm
