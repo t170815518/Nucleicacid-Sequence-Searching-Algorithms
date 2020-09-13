@@ -6,7 +6,7 @@
 
 unsigned int valueMap[86];  // ASCII value of U = 85
 const unsigned long MAX_OCCURRENCES = 100;
-const unsigned long MAX_LENGTH = 1000000;
+const unsigned long MAX_LENGTH = 10000000000;
 const unsigned long MAX_INPUT = 100000;
 
 char *readFile();
@@ -16,10 +16,10 @@ char *readFile() {
     /* read from the specified file.
      * Return: char array, with non-DNA/RNA information deleted.*/
     // change the path here:
-    FILE * file = fopen("/Users/tangyuting/Study/CZ2001/lab/GCF_009858895.2_ASM985889v3_genomic.fna", "r");
+    FILE * file = fopen("/Users/tangyuting/Study/CZ2001/lab/dna.200MB", "r");
 
     char dummyInput[200];
-    char inputSequence[MAX_LENGTH] = {};
+    char *inputSequence = (char*)malloc(MAX_LENGTH * sizeof(char));
     char buffer;
     unsigned int id = 0;
 

@@ -95,11 +95,13 @@ int RabinKarpAlgorithm_ntHash(char *geneticSequence, char *sequenceToFind, int *
     unsigned int subStringHash = 0;
 
     int numOfCollisions = 0;
+    int hits = 0;
 
     for (int i = 0; i < patternLength; ++i) {  // Please ensure the gene sequence is larger than the searching pattern
         subStringHash = subStringHash ^ rotl32(valueMap[geneticSequence[i]],patternLength-1-i);
     }
     if (subStringHash == patternHash) {
+        hits += 1;
         strncpy(subString, &geneticSequence[0], patternLength);
         if (bruteForceCompare(sequenceToFind, patternLength, subString) == 1) {
             occurrence[occurrence_id] = 0;
@@ -116,6 +118,7 @@ int RabinKarpAlgorithm_ntHash(char *geneticSequence, char *sequenceToFind, int *
                 ^valueMap[geneticSequence[i+patternLength-1]];
 
         if (subStringHash == patternHash) {
+            hits += 1;
             strncpy(subString, &geneticSequence[i], patternLength);
             if (bruteForceCompare(sequenceToFind, patternLength, subString) == 1) {
                 occurrence[occurrence_id] = i;
@@ -132,7 +135,7 @@ int RabinKarpAlgorithm_ntHash(char *geneticSequence, char *sequenceToFind, int *
         }
         i += 1;
     }
-    printf("==========%d times of collisions==========\n", numOfCollisions);
+    printf("==========%d/%d times of collisions==========\n", numOfCollisions, hits);
     return occurrence_id;
 }
 

@@ -9,6 +9,7 @@
 
 #define NTHASH_COMMAND "rk-nthash"
 #define RABINKARP_COMMAND "rk"
+#define BRUTEFROCE_COMMAND "b"
 
 
 int main(int argc, char *argv[]) {
@@ -17,12 +18,15 @@ int main(int argc, char *argv[]) {
     char patternSequence[MAX_INPUT];
     int (*func_ptr)(char*, char*, int*);
 
+    // parse the command line arguments
     if (argc == 2) {
         if (strcmp(argv[1],NTHASH_COMMAND) == 0) {
             func_ptr = &RabinKarpAlgorithm_ntHash;
+            initializeValueMap();
         } else if (strcmp(argv[1],RABINKARP_COMMAND) == 0) {
             func_ptr = &RabinKarpAlgorithmNaive;
-            initializeValueMap();
+        } else if (strcmp(argv[1],BRUTEFROCE_COMMAND) == 0) {
+            func_ptr = &BruteForce;
         }
     } else {
         func_ptr = &BruteForce;  // default algorithm
