@@ -6,7 +6,7 @@
 void computeLPSArray(char *pat, int M, int *lps);
 
 
-int KMPSearch(char *pat, char *txt, int *occurrences) {
+int KMPSearch(char *txt, char *pat, int *occurrences) {
     int M = strlen(pat);
     int N = strlen(txt);
     int noOfOccur = 0;

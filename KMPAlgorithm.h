@@ -6,7 +6,7 @@
 #define LAB_KMPALGORITHM_H
 
 
-int KMPSearch(char *pat, char *txt, int *occurrences);
+int KMPSearch(char *txt, char *pat, int *occurrences);
 
 
 #endif //LAB_KMPALGORITHM_H
