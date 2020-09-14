@@ -1,13 +1,13 @@
 #include "KMPAlgorithm.h"
+#include "FNAFilePreprocess.h"
 #include <string.h>
 #include <stdlib.h>
-
-const int MAX_OCCURRENCES = 100;
+#include <stdio.h>
 
 void computeLPSArray(char *pat, int M, int *lps);
 
 
-int KMPSearch(char *pat, char *txt, int *occurrences) {
+int KMPSearch(char *txt, char *pat, int *occurrences) {
     int M = strlen(pat);
     int N = strlen(txt);
     int noOfOccur = 0;
@@ -33,11 +33,11 @@ int KMPSearch(char *pat, char *txt, int *occurrences) {
         {
             ++noOfOccur;
             occurrences[noOfOccur-1] = i - j;
-			if (noOfOccur >= MAX_OCCURRENCES)
-			{
-				printf("==========There are more than %d occurrences. Only %d of them are displayed.==========\n", MAX_OCCURRENCES, MAX_OCCURRENCES);
-				break;
-			}
+            if (noOfOccur >= MAX_OCCURRENCES)
+            {
+                printf("==========There are more than %d occurrences. Only %d of them are displayed.==========\n", MAX_OCCURRENCES, MAX_OCCURRENCES);
+                break;
+            }
             j = lps[j - 1];
         }
 
