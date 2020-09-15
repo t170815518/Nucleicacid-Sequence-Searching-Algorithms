@@ -4,10 +4,9 @@
 
 ## Set-up Instructions 
 
-1. Download the files.
-2. Go to `cmake-build-debug` direcoty (where the makefile is located).
-3. Type `make` in Terminal.
-4. The execution file is `lab`. Type `./lab` to start the program.
+1. Download the files
+2. Use `CMakeLists.txt` for compilation through `CMake` 
+3. Execute the program. The name should be `PatternSearchProgram`. 
 
 ## Dataset
 
