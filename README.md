@@ -5,8 +5,10 @@
 ## Set-up Instructions 
 
 1. Download the files
-2. Use `CMakeLists.txt` for compilation through `CMake` 
-3. Execute the program. The name should be `PatternSearchProgram`. 
+2. `cmake` is recommended for building the files. Ensure `cmake` has been installed on the machine properly.
+3. Type `cmake PATH_OF_PROJECT`
+4. Go to the project directory and type `make`. An exetuable will be generated.
+5. Type `./PatternSearchProgram` to start.
 
 ## Dataset
 
