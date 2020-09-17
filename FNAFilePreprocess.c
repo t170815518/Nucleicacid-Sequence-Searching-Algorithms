@@ -15,7 +15,7 @@ char *readFile(char *datasetName) {
      * Return: char array, with non-DNA/RNA information deleted.*/
     // change the path here:
     char path[1000];
-    sprintf(path, "../dataset/%s",datasetName);
+    sprintf(path, "dataset/%s",datasetName);
     FILE * file = fopen(path, "r");
 
     char dummyInput[200];
