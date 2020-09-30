@@ -135,7 +135,7 @@ int RabinKarpAlgorithm_ntHash(char *geneticSequence, char *sequenceToFind, int *
         }
         i += 1;
     }
-    printf("==========%d/%d times of collisions==========\n", numOfCollisions, hits);
+    printf("==========%d times of collisions==========\n", numOfCollisions);
     return occurrence_id;
 }
 
