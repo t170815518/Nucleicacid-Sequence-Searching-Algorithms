@@ -9,7 +9,9 @@
 #include <limits.h>
 #include <stdint.h>
 
-
+#define BitsCount( val ) ( sizeof( val ) * CHAR_BIT )
+#define Shift( val, steps ) ( steps % BitsCount( val ) )
+#define ROL( val, steps ) ( ( val << Shift( val, steps ) ) | ( val >> ( BitsCount( val ) - Shift( val, steps ) ) ) )
 #define BASE 3
 
 
@@ -87,23 +89,31 @@ int RabinKarpAlgorithm_ntHash(char *geneticSequence, char *sequenceToFind, int *
 
     unsigned int patternHash = 0;
     for (int i = 0; i < patternLength; ++i) {
-        patternHash = patternHash ^ rotl32(valueMap[sequenceToFind[i]],patternLength-1-i);
+        patternHash = patternHash ^ ROL(valueMap[sequenceToFind[i]],patternLength-1-i);
     }
 
     int occurrence_id = 0;
-    char subString[patternLength];
     unsigned int subStringHash = 0;
 
     int numOfCollisions = 0;
     int hits = 0;
+    int isSame;
 
     for (int i = 0; i < patternLength; ++i) {  // Please ensure the gene sequence is larger than the searching pattern
-        subStringHash = subStringHash ^ rotl32(valueMap[geneticSequence[i]],patternLength-1-i);
+        subStringHash = subStringHash ^ ROL(valueMap[geneticSequence[i]],patternLength-1-i);
     }
+
     if (subStringHash == patternHash) {
         hits += 1;
-        strncpy(subString, &geneticSequence[0], patternLength);
-        if (bruteForceCompare(sequenceToFind, patternLength, subString) == 1) {
+        isSame = 1;
+        for (int j = 0; j < patternLength; j++) {
+            if (geneticSequence[j] != sequenceToFind[j]) {
+                isSame = 0;
+                break;
+            }
+        }
+
+        if (isSame == 1) {
             occurrence[occurrence_id] = 0;
             occurrence_id += 1;
         } else {
@@ -112,15 +122,24 @@ int RabinKarpAlgorithm_ntHash(char *geneticSequence, char *sequenceToFind, int *
     }
 
     unsigned long i = 1;
+
     while (geneticSequence[i+patternLength-1] != '\0') {
         // update substring's hash value
-        subStringHash = rotl32(subStringHash,1)^rotl32(valueMap[geneticSequence[i-1]],patternLength)
+        subStringHash = ROL(subStringHash,1)^ROL(valueMap[geneticSequence[i-1]],patternLength)
                 ^valueMap[geneticSequence[i+patternLength-1]];
 
         if (subStringHash == patternHash) {
             hits += 1;
-            strncpy(subString, &geneticSequence[i], patternLength);
-            if (bruteForceCompare(sequenceToFind, patternLength, subString) == 1) {
+
+            isSame = 1;
+            for (int j = 0; j < patternLength; j++) {
+                if (geneticSequence[i+j] != sequenceToFind[j]) {
+                    isSame = 0;
+                    break;
+                }
+            }
+
+            if (isSame == 1) {
                 occurrence[occurrence_id] = i;
                 occurrence_id += 1;
 
