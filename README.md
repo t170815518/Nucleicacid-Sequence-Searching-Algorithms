@@ -7,8 +7,8 @@
 1. Download the files
 2. `cmake` is recommended for building the files. Ensure `cmake` has been installed on the machine properly.
 3. Type `cmake PATH_OF_PROJECT`
-4. Go to the project directory and type `make`. An exetuable will be generated.
-5. Type `./PatternSearchProgram` to start.
+4. Go to the project directory and type `make`. An exetuable named `PatternSearchProgram`  will be generated.
+5. Type `./PatternSearchProgram` to start 
 
 ## Dataset
 
@@ -29,7 +29,7 @@ By default,
 The syntax of the command: 
 
 ```bash
-./lab algorithm dataset 
+./PatternSearchProgram algorithm dataset 
 ```
 
 `dataset` refers to the file name of the dataset in `dataset` directory. 
@@ -43,16 +43,16 @@ The syntax of the command:
 ### Example
 
 ```bash
-./lab b # brute force 
-./lab kmp # kmp
-./lab rk # rabin-karp
-./lab rk-nt # rabin-karp improved 
+./PatternSearchProgram b # brute force 
+./PatternSearchProgram kmp # kmp
+./PatternSearchProgram rk # rabin-karp
+./PatternSearchProgram rk-nt # rabin-karp improved 
 ```
 
 #### Example output
 
 ```bash
-$ ./lab b dna.200MB
+$ ./PatternSearchProgram b dna.200MB
 Type the target pattern to search (type -1 to exit the program): ATTTTTAAA
 ==========There are more than 100 occurrences. Only 100 of them are displayed.==========
 ==========100 occurrences found in total==========
@@ -60,7 +60,7 @@ Type the target pattern to search (type -1 to exit the program): ATTTTTAAA
 ==========Execution time = 27.019000==========
 Type the target pattern to search (type -1 to exit the program): -1
 
-$ ./lab rk-nt dna.200MB
+$ ./PatternSearchProgram rk-nt dna.200MB
 ==========Random Numbers Generated==========
 G = 2089631732
 A = 847563288
